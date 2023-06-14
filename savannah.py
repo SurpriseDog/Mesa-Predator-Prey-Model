@@ -10,6 +10,7 @@ import random
 import itertools
 import mesa.time
 import tkinter as tk
+from tkinter import ttk
 from mesa import Agent, Model
 from mesa.space import ContinuousSpace
 
@@ -28,7 +29,7 @@ RADIUS_TIGER = 9
 TICK_DELAY = 10
 NUM_TICKS = 100
 START_TIME = None
-
+MAX_TICKS = NUM_TICKS
 
 
 def get_speed(cur_age, max_age, max_speed):
@@ -484,6 +485,10 @@ def run_simulation():
 
     num_ticks = int(num_ticks_str)
 
+    def update_progress(progress):
+        PROGRESS_BAR["value"] = progress
+        PROGRESS_LABEL["text"] = f"Progress: {progress}%"
+        ROOT.update()
     def step():
         nonlocal num_ticks
         if RESET_FLAG or num_ticks <= 0:
@@ -501,7 +506,19 @@ def run_simulation():
         num_ticks -= 1
         INFO_PREY.config(text="Prey:   "+str(model.Prey_count))
         INFO_TIGER.config(text="Tigers: "+str(model.Tiger_count))
-        ROOT.after(int(TICK_DELAY), step)
+
+        # Calculate the progress percentage
+        progress_percentage = int(((MAX_TICKS - num_ticks) / MAX_TICKS) * 100)
+        print(progress_percentage)
+        update_progress(progress_percentage)
+
+        if NUM_TICKS > 0:
+            ROOT.after(1, step)
+        else:
+            # Simulation completed, print total runtime
+            elapsed_time = time.time() - start_time
+            print("Total runtime:", str(datetime.timedelta(seconds=int(elapsed_time))))
+
 
     NUM_TICKS = num_ticks
 
@@ -554,6 +571,12 @@ repo(NUM_TICKS_ENTRY, 450 + GO_B.winfo_width() + 110, CANVAS_MARGIN)
 
 repo(TICKS_LABEL, 560, CANVAS_MARGIN + 5)
 repo(NUM_TICKS_ENTRY, 450 + GO_B.winfo_width() + 110, CANVAS_MARGIN + 30)
+
+PROGRESS_BAR = ttk.Progressbar(ROOT, orient="horizontal", length=300, mode="determinate")
+repo(PROGRESS_BAR, CANVAS_MARGIN, CANVAS_MARGIN + 80)
+
+PROGRESS_LABEL = tk.Label(ROOT, text="Progress: 0%")
+repo(PROGRESS_LABEL, CANVAS_MARGIN + 310, CANVAS_MARGIN + 80)
 
 
 CANVAS = tk.Canvas(ROOT, width=830, height=830)
