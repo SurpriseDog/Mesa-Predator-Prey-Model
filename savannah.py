@@ -329,7 +329,7 @@ class Prey_model(Model):
     def __init__(self, Prey_count, Tiger_count, width, height, CANVAS):
         self.count = 0  # Number of agents
         self.schedule = mesa.time.RandomActivation(self)
-        self.space = ContinuousSpace(width+1, height+1, torus=False)
+        self.space = ContinuousSpace(width+1, height+1, torus=True)
         self.step_num = 0
         self.last_uid = 0
         self.canvas = CANVAS
