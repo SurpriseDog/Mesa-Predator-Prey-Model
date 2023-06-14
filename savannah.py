@@ -25,6 +25,7 @@ LIFESPAN_PREY = 9
 RADIUS_PREY = 2
 RADIUS_TIGER = 9
 TICK_DELAY = 10
+NUM_TICKS = 100
 
 
 def get_speed(cur_age, max_age, max_speed):
@@ -461,6 +462,8 @@ def run_simulation():
 	'''Go button'''
 	global RESET_FLAG
 	global RUNNING_FLAG
+	global NUM_TICKS
+
 	if RUNNING_FLAG:
 		print('Already running')
 		return
@@ -468,7 +471,8 @@ def run_simulation():
 		RUNNING_FLAG = True
 
 	def step():
-		if RESET_FLAG:
+        nonlocal NUM_TICKS
+		if RESET_FLAG or NUM_TICKS <= 0:
 			CANVAS.delete("all")
 			CANVAS.config(background='grey')
 			INFO_PREY.config(text="Prey:   ")
@@ -478,6 +482,7 @@ def run_simulation():
 		model.step()
 		if model.count == 0:
 			return
+        NUM_TICKS -= 1
 		INFO_PREY.config(text="Prey:   "+str(model.Prey_count))
 		INFO_TIGER.config(text="Tigers: "+str(model.Tiger_count))
 		ROOT.after(int(TICK_DELAY), step)
