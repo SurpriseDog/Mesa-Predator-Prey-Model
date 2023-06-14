@@ -469,6 +469,7 @@ def run_simulation():
     global RUNNING_FLAG
     global NUM_TICKS
     global START_TIME
+    global MAX_TICKS
 
     if RUNNING_FLAG:
         print('Already running')
@@ -484,6 +485,8 @@ def run_simulation():
         return
 
     num_ticks = int(num_ticks_str)
+
+    MAX_TICKS = num_ticks
 
     def update_progress(progress):
         PROGRESS_BAR["value"] = progress
