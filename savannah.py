@@ -401,7 +401,8 @@ class Prey_model(Model):
         self.schedule.step()
 
         if self.count <= 0:
-            poem = '''
+            poem = f'''
+            Simulation stopped at tick {self.step_num}
             No sun - no moon
             No morn - no noon
             No dawn - no dusk - no proper time of day
