@@ -512,7 +512,6 @@ def run_simulation():
 
         # Calculate the progress percentage
         progress_percentage = int(((MAX_TICKS - num_ticks) / MAX_TICKS) * 100)
-        print(progress_percentage)
         update_progress(progress_percentage)
 
         if NUM_TICKS > 0:
